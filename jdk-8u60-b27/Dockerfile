@@ -41,7 +41,7 @@ RUN mkdir /opt && curl -jksSLH "Cookie: oraclelicense=accept-securebackup-cookie
 
 RUN POLICY_URL="http://download.oracle.com/otn-pub/java/jce/${JAVA_VERSION_MAJOR}/jce_policy-${JAVA_VERSION_MAJOR}.zip" \
  && POLICY_DIR="UnlimitedJCEPolicyJDK8" \
- && curl -jksSLH "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" \
+ && curl -jksSLH "Cookie: gpw_e24=http%3A%2F%2Fdownload.oracle.com%2F; oraclelicense=accept-securebackup-cookie" \
           "$POLICY_URL" -O /tmp/policy.zip \
  && cd /tmp \
  && unzip /tmp/policy.zip \
