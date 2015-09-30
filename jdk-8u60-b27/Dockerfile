@@ -39,10 +39,8 @@ RUN mkdir /opt && curl -jksSLH "Cookie: oraclelicense=accept-securebackup-cookie
            /opt/jdk/jre/lib/amd64/libjavafx*.so \
            /opt/jdk/jre/lib/amd64/libjfx*.so
 
-RUN POLICY_URL="http://download.oracle.com/otn-pub/java/jce/${JAVA_VERSION_MAJOR}/jce_policy-${JAVA_VERSION_MAJOR}.zip" \
- && POLICY_DIR="UnlimitedJCEPolicyJDK8" \
- && curl -jksSLH "Cookie: gpw_e24=http%3A%2F%2Fdownload.oracle.com%2F; oraclelicense=accept-securebackup-cookie" \
-          "$POLICY_URL" -O /tmp/policy.zip \
+RUN POLICY_DIR="UnlimitedJCEPolicyJDK${JAVA_VERSION_MAJOR}" \
+ && curl -s -k -L -C - -b "oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jce/${JAVA_VERSION_MAJOR}/jce_policy-${JAVA_VERSION_MAJOR}.zip > /tmp/policy.zip \
  && cd /tmp \
  && unzip /tmp/policy.zip \
  && mv /tmp/$POLICY_DIR/*.jar /opt/jdk/lib/security/ \
