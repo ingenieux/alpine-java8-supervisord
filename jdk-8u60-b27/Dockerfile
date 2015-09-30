@@ -17,6 +17,7 @@ RUN mkdir /opt && curl -jksSLH "Cookie: oraclelicense=accept-securebackup-cookie
   http://download.oracle.com/otn-pub/java/jdk/${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-b${JAVA_VERSION_BUILD}/${JAVA_PACKAGE}-${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-linux-x64.tar.gz \
     | tar -xzf - -C /opt &&\
     ln -s /opt/jdk1.${JAVA_VERSION_MAJOR}.0_${JAVA_VERSION_MINOR} /opt/jdk &&\
+    mkdir -p /opt/jdk/lib/security &&\
     rm -rf /opt/jdk/*src.zip \
            /opt/jdk/lib/missioncontrol \
            /opt/jdk/lib/visualvm \
@@ -37,6 +38,16 @@ RUN mkdir /opt && curl -jksSLH "Cookie: oraclelicense=accept-securebackup-cookie
            /opt/jdk/jre/lib/amd64/libgstreamer-lite.so \
            /opt/jdk/jre/lib/amd64/libjavafx*.so \
            /opt/jdk/jre/lib/amd64/libjfx*.so
+
+RUN POLICY_URL="http://download.oracle.com/otn-pub/java/jce/${JAVA_VERSION_MAJOR}/jce_policy-${JAVA_VERSION_MAJOR}.zip" \
+ && POLICY_DIR="UnlimitedJCEPolicyJDK8" \
+ && wget --quiet --no-cookies --no-check-certificate \
+           --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" \
+          "$POLICY_URL" -O /tmp/policy.zip \
+ && cd /tmp \
+ && unzip /tmp/policy.zip \
+ && mv /tmp/$POLICY_DIR/*.jar /opt/jdk/lib/security/ \
+ && rm -rf /tmp/*
 
 # Set environment
 ENV JAVA_HOME /opt/jdk
